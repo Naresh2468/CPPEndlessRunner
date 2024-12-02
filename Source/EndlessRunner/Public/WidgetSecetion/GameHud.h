@@ -60,7 +60,13 @@ public:
 	void RestartGame();
 
 	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent)
-	void MagnetPowerupupdates(float value);
+	void MagnetPowerupUpdates(float value ,float Duration);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void ShieldPowerupUpdates(float value, float Duration);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void HighJumpPowerupUpdates(float value, float Duration);
 
 
 

@@ -93,6 +93,20 @@ void AMainRunner::MoveJumpStop()
 	StopJumping();
 }
 
+void AMainRunner::HighJumpActive(bool value)
+{
+	if (value)
+	{
+		GetCharacterMovement()->JumpZVelocity = HighJumpPowerup;
+		GetCharacterMovement()->GravityScale = 1.55;
+	}
+	else
+	{
+		GetCharacterMovement()->JumpZVelocity = JumpForce;
+		GetCharacterMovement()->GravityScale = 1.25;
+	}
+}
+
 
 void AMainRunner::ChangeLaneUpdate(const float value)
 {

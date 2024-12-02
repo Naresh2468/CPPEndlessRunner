@@ -85,6 +85,12 @@ public:
 	FVector OriginalMeshLocation;*/
 
 	float TargetCapsuleHeight;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "@NRCollection|Powerup")
+	int32 HighJumpPowerup;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "@NRCollection|Powerup")
+	int32 JumpForce;
 	
 
 	bool bIsSliding;
@@ -147,6 +153,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void TimeSlide(bool value);
+
+	UFUNCTION(BlueprintCallable, Category = "Powerup")
+	void HighJumpActive(bool value);
 
 	UFUNCTION()
 	void EndSlide(UAnimMontage* Montage, bool bInterrupted);	// Stop the slide (Montage finished)
