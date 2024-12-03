@@ -39,7 +39,7 @@ public:
 	TArray<float>LaneLocationPlayer;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite ,Category = "@NRCollection|Floor")
-	TSubclassOf<class AFloorscape> Floorclass;
+	TArray<TSubclassOf<class AFloorscape>> Floorclass;
 	
 	FVector FloorSpawnLocation;
 
@@ -69,6 +69,9 @@ public:
 	FTimerHandle ScoreUpdateTime;
 
 	FOnCurrentScoreChanged OnCurrentScoreChanged;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "@NRCollection|Sound")
+	class USoundBase* BackgroundMusic;
 
 #pragma endregion
 

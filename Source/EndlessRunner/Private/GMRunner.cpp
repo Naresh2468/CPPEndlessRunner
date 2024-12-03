@@ -16,6 +16,10 @@ void AGMRunner::BeginPlay()
 	Super::BeginPlay();
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->bShowMouseCursor = true;
 	GameHud = Cast<UGameHud>(CreateWidget(GetWorld(), GameHudClass));
+	if (BackgroundMusic)  // Make sure the sound is valid
+	{
+		UGameplayStatics::PlaySound2D(this, BackgroundMusic);
+	}
 	check(GameHud);
 	GameHud->AddToViewport();
 	CreateInitialFloor();
@@ -39,7 +43,8 @@ void AGMRunner::CreateInitialFloor()
 	{
 		AddFloor(false);
 	}
-	AFloorscape* CurrentFloorRef = GetWorld()->SpawnActor<AFloorscape>(Floorclass, FloorSpawnLocation, FRotator(0, 0, 0));
+	int IndexToSpawn = FMath::RandHelper(Floorclass.Num());
+	AFloorscape* CurrentFloorRef = GetWorld()->SpawnActor<AFloorscape>(Floorclass[0], FloorSpawnLocation, FRotator(0, 0, 0));
 	FloorSpawnLocation = CurrentFloorRef->SpawnAttachPoint->GetComponentLocation();
 
 	LaneLocationPlayer.Add(CurrentFloorRef->LeftLaneRef->GetComponentLocation().Y);
@@ -52,8 +57,8 @@ void AGMRunner::CreateInitialFloor()
 }
 void AGMRunner::AddFloor(const bool SpawnObstacle)
 {
-	AFloorscape* FloorSpawnerInstance = GetWorld()->SpawnActor<AFloorscape>(Floorclass, FloorSpawnLocation, FRotator(0, 0, 0));
-
+	int IndexToSpawn = FMath::RandHelper(Floorclass.Num());
+	AFloorscape* FloorSpawnerInstance = GetWorld()->SpawnActor<AFloorscape>(Floorclass[IndexToSpawn], FloorSpawnLocation, FRotator(0, 0, 0));
 	FloorSpawnLocation = FloorSpawnerInstance->SpawnAttachPoint->GetComponentLocation();
 	if (SpawnObstacle)FloorSpawnerInstance->SpawnObstacle();
 }
@@ -92,6 +97,7 @@ void AGMRunner::GameOver()
 		UUserWidget* GameOver = CreateWidget(GetWorld(), GameOverClass);
 		if (GameOver)
 		{
+
 			GameOver->AddToViewport();
 			StopUpdateScore();
 			SaveGameCall();

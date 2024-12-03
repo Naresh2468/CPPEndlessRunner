@@ -37,6 +37,10 @@ void AGems::CoinOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherA
 	if (OtherActor == Cast<AActor>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)))
 	{
 		AMainRunner* MainPlayer = Cast<AMainRunner>(OtherActor);
+		if (GemCollectSound)  // Make sure the sound is valid
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, GemCollectSound, MainMesh->GetComponentLocation());
+		}
 		MainPlayer->AddGems();
 		Destroy();
 	}

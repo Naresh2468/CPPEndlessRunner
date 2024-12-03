@@ -23,6 +23,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UBoxComponent* ObstacleCollision;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "@NRCollection|Sound")
+	class USoundBase* ObstacleSound;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

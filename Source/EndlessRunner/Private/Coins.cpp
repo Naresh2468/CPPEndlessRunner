@@ -39,6 +39,10 @@ void ACoins::CoinOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 	{
 		AMainRunner* MainPlayer = Cast<AMainRunner>(OtherActor);
 		MainPlayer->AddCoins();
+		if (CoinCollectSound)  // Make sure the sound is valid
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, CoinCollectSound, MainMesh->GetComponentLocation());
+		}
 		Destroy();
 	}
 }

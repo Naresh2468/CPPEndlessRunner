@@ -58,7 +58,6 @@ public:
 	int32 NextLane = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "@NRCollection|References")
 	AGMRunner* MainGameMode;
-	class USoundBase* DeathSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "@NRCollection|Slide")
 	UAnimMontage* SlideMontage;
@@ -94,6 +93,10 @@ public:
 	
 
 	bool bIsSliding;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "@NRCollection|Sound")
+	class USoundBase* DeathSound;
+
 	
 #pragma endregion
 	//EnhancedMovement

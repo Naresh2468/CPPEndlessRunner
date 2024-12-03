@@ -93,12 +93,12 @@ void AFloorscape::SpawnObstacle()
 
 void AFloorscape::SpawnObstacleOnLane(UArrowComponent* Lanes , int32& NumBigs)
 {
-	const float SpawnChances = FMath::FRandRange(0.0f, 1.0f);
 	FActorSpawnParameters spawnParameters;
 	spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	const FVector& SpawnLocation = Lanes->GetComponentLocation();
 	
-	if (UKismetMathLibrary::InRange_FloatFloat(SpawnChances, SpawnpercentSmallObstacles, SpawnpercentSmallObstacles2))
+	const float SpawnChancesItems = FMath::FRandRange(0.0f, 1.0f);
+	if (UKismetMathLibrary::InRange_FloatFloat(SpawnChancesItems, SpawnpercentSmallObstacles, SpawnpercentSmallObstacles2))
 	{
 		if (BisObstacleSpawn && SmallObstaclesArray.Num() > 0)
 		{
@@ -117,7 +117,7 @@ void AFloorscape::SpawnObstacleOnLane(UArrowComponent* Lanes , int32& NumBigs)
 		}
 
 	}
-	else if (UKismetMathLibrary::InRange_FloatFloat(SpawnChances, SpawnpercentSmallObstacles2, 0.6F))
+	else if (UKismetMathLibrary::InRange_FloatFloat(SpawnChancesItems, SpawnpercentSmallObstacles2, 0.6F))
 	{
 		if (NumBigs <= 2)
 		{
@@ -151,48 +151,63 @@ void AFloorscape::SpawnObstacleOnLane(UArrowComponent* Lanes , int32& NumBigs)
 
 		}
 	}
-	else if (UKismetMathLibrary::InRange_FloatFloat(SpawnChances, SpawnCoinPercent, 1.0F))
+	else 
 	{
 		const float SpawnGemsChances = FMath::FRandRange(0.0f, 1.0f);
 		if (SpawnGemsChances < SpawnpercenGems)
 		{
-			int IndexToSpawn = FMath::RandHelper(SpawnGems.Num());
-			if (SpawnGems[IndexToSpawn]) // Check if the class at the random index is valid before spawning
+			if (!BisSpecialSpawn)
 			{
-				//Gems spawn rare
-				FVector NewSpawnLocation = SpawnLocation; // Adjust the X-axis for distance between spawns
-				FRotator SpawnRotation = FRotator(0, 0, 0); // Modify this if you need dynamic rotation
-				AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(SpawnGems[IndexToSpawn], NewSpawnLocation, SpawnRotation, spawnParameters);
-				if (SpawnedActor) SpawnedItemCollection.Add(SpawnedActor);
+				int IndexToSpawn = FMath::RandHelper(SpawnSpecial.Num());
+				if (SpawnSpecial[IndexToSpawn]) // Check if the class at the random index is valid before spawning
+				{
+					//Special spawn rare
+					FVector NewSpawnLocation = SpawnLocation; // Adjust the X-axis for distance between spawns
+					FRotator SpawnRotation = FRotator(0, 0, 0); // Modify this if you need dynamic rotation
+					AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(SpawnSpecial[IndexToSpawn], NewSpawnLocation, SpawnRotation, spawnParameters);
+					if (SpawnedActor) SpawnedItemCollection.Add(SpawnedActor);
+				}
+				BisSpecialSpawn = true;
+			}
+			else
+			{
+				SpawnCoinsonly(SpawnLocation);
 			}
 		}
 		else
 		{
 			if (BisObstacleSpawn && SpawnCoins.Num() > 0)
 			{
-				const int NumSpawns = 3;
-				const float SpawnDistance = 200.0f; // Adjust this to set the distance between spawns
-
-				for (int i = 0; i < NumSpawns; ++i)
-				{
-					int IndexToSpawn = FMath::RandHelper(SpawnCoins.Num()); // Get a random index from the SpawnCoins array
-
-					if (SpawnCoins[IndexToSpawn]) // Check if the class at the random index is valid before spawning
-					{
-						// Calculate the new spawn location with some distance offset
-						FVector NewSpawnLocation = SpawnLocation + FVector(SpawnDistance * i, 0.0f, 0.0f); // Adjust the X-axis for distance between spawns
-
-						// Spawn the actor at the new location and with no rotation (you can adjust rotation if needed)
-						FRotator SpawnRotation = FRotator(0, 0, 0); // Modify this if you need dynamic rotation
-						AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(SpawnCoins[IndexToSpawn], NewSpawnLocation, SpawnRotation, spawnParameters);
-						if (SpawnedActor) SpawnedItemCollection.Add(SpawnedActor);
-					}
-				}
+				SpawnCoinsonly(SpawnLocation);
 			}
 		}
 	}
 }
+void AFloorscape::SpawnCoinsonly(FVector value)
+{
+	FActorSpawnParameters spawnParameters;
+	if (BisObstacleSpawn && SpawnCoins.Num() > 0)
+	{
+		const int NumSpawns = 3;
+		const float SpawnDistance = 200.0f; // Adjust this to set the distance between spawns
 
+		for (int i = 0; i < NumSpawns; ++i)
+		{
+			int IndexToSpawn = FMath::RandHelper(SpawnCoins.Num()); // Get a random index from the SpawnCoins array
+
+			if (SpawnCoins[IndexToSpawn]) // Check if the class at the random index is valid before spawning
+			{
+				// Calculate the new spawn location with some distance offset
+				FVector NewSpawnLocation = value + FVector(SpawnDistance * i, 0.0f, 0.0f); // Adjust the X-axis for distance between spawns
+
+				// Spawn the actor at the new location and with no rotation (you can adjust rotation if needed)
+				FRotator SpawnRotation = FRotator(0, 0, 0); // Modify this if you need dynamic rotation
+				AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(SpawnCoins[IndexToSpawn], NewSpawnLocation, SpawnRotation, spawnParameters);
+				if (SpawnedActor) SpawnedItemCollection.Add(SpawnedActor);
+			}
+		}
+	}
+}
 void AFloorscape::DestroySpawnedItems()
 {
 	// Iterate through the spawned items

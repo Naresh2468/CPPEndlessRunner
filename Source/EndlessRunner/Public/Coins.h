@@ -23,6 +23,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UBoxComponent* CoinCollision;
 
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class URotatingMovementComponent* RotationComponent;
 

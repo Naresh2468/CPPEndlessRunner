@@ -135,13 +135,16 @@ void AMainRunner::PlayerDeathProcess()
 	{
 		// Set the mesh to simulate physics for ragdoll effect
 		PlayerMesh->SetSimulatePhysics(true);
-		PlayerMesh->WakeAllRigidBodies(); // Wake up the rigid bodies for the physics simulation to take effect
+		//PlayerMesh->WakeAllRigidBodies(); // Wake up the rigid bodies for the physics simulation to take effect
 		// Optionally, you can apply an impulse to the mesh to add force at death location
 		//FVector Impulse = FVector(0, 0, 1000); // Modify impulse as needed
 		//PlayerMesh->AddImpulse(Impulse);
 		// 
 		//->Note : - mesh shoudl have the physics assets assign. or else it would not work.
-
+		if (DeathSound)  // Make sure the sound is valid
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetMesh()->GetComponentLocation());
+		}
 		MainGameMode->GameOver(); // Game over screen.
 	}
 }

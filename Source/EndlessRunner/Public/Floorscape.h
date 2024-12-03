@@ -58,7 +58,7 @@ public:
 	TArray<TSubclassOf<class AActor>> SpawnCoins;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "@NRCollection|SpawnItem")
-	TArray<TSubclassOf<class AActor>> SpawnGems;
+	TArray<TSubclassOf<class AActor>> SpawnSpecial;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "@NRCollection|DebugTools")
@@ -74,10 +74,12 @@ public:
 	float SpawnpercentSmallObstacles2 = 0.4f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "@NRCollection|SpawnPercent")
-	float SpawnpercenGems = 0.1f;
+	float SpawnpercenGems = 0.15f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "@NRCollection|SpawnPercent")
 	float SpawnCoinPercent = 0.5f;
+
+	bool BisSpecialSpawn;
 #pragma endregion
 #pragma region Floor Function
 	//UFUNCTION()
@@ -88,6 +90,8 @@ public:
 
 	UFUNCTION()
 	void SpawnObstacle();
+	UFUNCTION()
+	void SpawnCoinsonly(FVector value);
 	UFUNCTION()
 	void SpawnObstacleOnLane(UArrowComponent* Lanes,int32& NumBigs);
 

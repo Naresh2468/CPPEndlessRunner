@@ -37,6 +37,10 @@ void AObstacles::ObstacleOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 	if (OtherActor == Cast<AActor>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0)))
 	{
 		AMainRunner* MainPlayer = Cast<AMainRunner>(OtherActor);
+		if (ObstacleSound)  // Make sure the sound is valid
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, ObstacleSound, MainMesh->GetComponentLocation());
+		}
 		MainPlayer->PlayerDeathProcess();
 	}
 }
