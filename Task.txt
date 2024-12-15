@@ -5,7 +5,7 @@
 5.HUD ui fix and SOUND FOR GAME.
 
 6.POWERUP 
-A.Magnet.(Done).
+A.Magnet.
 B.Shield power
 C.Speed boost.
 D.High Jump.
